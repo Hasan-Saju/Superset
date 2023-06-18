@@ -19,13 +19,14 @@
 # Node stage to deal with static asset construction
 ######################################################################
 ARG PY_VER=3.9.16-slim
+FROM node:19.5.0-alpine
 
 # if BUILDPLATFORM is null, set it to 'amd64' (or leave as is otherwise).
 ARG BUILDPLATFORM=${BUILDPLATFORM:-amd64}
 FROM --platform=${BUILDPLATFORM} node:16-slim AS superset-node
 
 ARG NPM_BUILD_CMD="build"
-ENV BUILD_CMD=${NPM_BUILD_CMD}
+
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # NPM ci first, as to NOT invalidate previous steps except for when package.json changes
@@ -41,6 +42,7 @@ RUN npm ci
 
 COPY ./superset-frontend .
 
+ENV BUILD_CMD=${NPM_BUILD_CMD}
 # This seems to be the most expensive step
 RUN npm run ${BUILD_CMD}
 
@@ -56,6 +58,7 @@ ENV LANG=C.UTF-8 \
     PYTHONPATH="/app/pythonpath" \
     SUPERSET_HOME="/app/superset_home" \
     SUPERSET_PORT=8088
+    # SUPERSET_PORT=8888
 
 RUN mkdir -p ${PYTHONPATH} \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
@@ -78,9 +81,14 @@ COPY --chown=superset:superset setup.py MANIFEST.in README.md ./
 # setup.py uses the version information in package.json
 COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
 
-RUN mkdir -p superset/static \
-    && touch superset/static/version_info.json \
-    && pip install --no-cache-dir -r requirements/local.txt
+# RUN mkdir -p superset/static \
+#     && touch superset/static/version_info.json \
+#     && pip install --no-cache-dir -r requirements/local.txt
+
+RUN mkdir -p superset/static
+RUN touch superset/static/version_info.json
+RUN pip install --no-cache-dir -r requirements/local.txt
+
 
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
 
