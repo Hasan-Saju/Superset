@@ -44,6 +44,7 @@ import { usePluginContext } from 'src/components/DynamicPlugins';
 import Icons from 'src/components/Icons';
 import { nativeFilterGate } from 'src/dashboard/components/nativeFilters/utils';
 import scrollIntoView from 'scroll-into-view-if-needed';
+import GanttChart from './GanttChart';
 
 interface VizTypeGalleryProps {
   onChange: (vizType: string | null) => void;
@@ -64,6 +65,13 @@ enum SECTIONS {
   TAGS = 'TAGS',
   RECOMMENDED_TAGS = 'RECOMMENDED_TAGS',
 }
+
+// const tasks = [
+//   { name: 'Task 1', start: 0, duration: 4 },
+//   { name: 'Task 2', start: 4, duration: 3 },
+//   { name: 'Task 3', start: 7, duration: 5 },
+//   // Additional tasks...
+// ];
 
 const DEFAULT_ORDER = [
   'line',
@@ -802,6 +810,8 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
           setSelectedViz={onChange}
           onDoubleClick={onDoubleClick}
         />
+        <GanttChart />
+        {/* eikhane lekha lagbe */}
       </RightPane>
 
       {selectedVizMetadata ? (

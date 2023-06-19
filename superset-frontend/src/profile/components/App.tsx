@@ -79,7 +79,7 @@ export default function App({ user }: AppProps) {
               key="4"
               tab={
                 <div>
-                  <i className="fa fa-lock" /> {t('Security')}
+                  <i className="fa fa-lock" /> {t('Security & Saju')}
                 </div>
               }
             >
