@@ -73,4 +73,5 @@ class GanttChart extends Component {
     )
   }
 }
+
 export default GanttChart

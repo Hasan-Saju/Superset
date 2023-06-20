@@ -44,7 +44,10 @@ import { usePluginContext } from 'src/components/DynamicPlugins';
 import Icons from 'src/components/Icons';
 import { nativeFilterGate } from 'src/dashboard/components/nativeFilters/utils';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import GanttChart from './GanttChart';
+// import GanttChart from './GanttChart';
+import ThumbnailGantt from './Thumbnail';
+import { WaterfallThumbnail, BubbleThumbnail, HistogramThumbnail, HeatmapThumbnail, RadarThumbnail } from './ThumbnailComponents';
+// import {WaterfallThumbnail}  from './ThumbnailComponents';
 
 interface VizTypeGalleryProps {
   onChange: (vizType: string | null) => void;
@@ -810,8 +813,15 @@ export default function VizTypeGallery(props: VizTypeGalleryProps) {
           setSelectedViz={onChange}
           onDoubleClick={onDoubleClick}
         />
-        <GanttChart />
+        {/* <GanttChart /> */}
         {/* eikhane lekha lagbe */}
+        <ThumbnailGantt imageUrl={"https://www.smartsheet.com/sites/default/files/styles/1300px/public/2021-05/IC-Gantt-Chart-Example-Product-Development_WORD.png?itok=kST_-09R"} altText={"This is a Gantt Chart"} />
+          
+          {/* <WaterfallThumbnail /> */}
+          <RadarThumbnail/>
+          <HeatmapThumbnail/>
+          <BubbleThumbnail/>
+          <HistogramThumbnail/>
       </RightPane>
 
       {selectedVizMetadata ? (
